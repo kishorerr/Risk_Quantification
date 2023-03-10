@@ -1,5 +1,6 @@
 from flask import Blueprint ,request , Response , make_response , render_template
 from WAF.WAF_Layers.bad_useragents import block_baduseragents
+from WAF.WAF_Layers.malicious_payloads import block_malicious_payloads
 import csv
 from datetime import date,datetime
 from env.http_config import HTTP_CONFIG
@@ -29,6 +30,17 @@ def request_handler(path : str ="") -> Response:
             return make_response(render_template("blocked.html")
                             ,HTTP_CONFIG["blocked_status_code"]
                             ,HTTP_CONFIG["blocked_response_headers"])
+    
+    if HTTP_CONFIG["block_malicious_payloads"] :
+        is_malicious_req = block_malicious_payloads(request)
+
+        if is_malicious_req:
+            
+            print(f"\nMalicious Payload!!! |URL : {real_url} |  |METHOD : {request.method} |Ip : {request.remote_addr} ")
+            
+            return make_response(render_template("blocked.html")
+                                    ,HTTP_CONFIG["blocked_status_code"]
+                                    ,HTTP_CONFIG["blocked_response_headers"])
     
 
 

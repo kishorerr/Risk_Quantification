@@ -45,7 +45,7 @@ app.post("/submit_login",(req,res)=>{
     console.log(fullUrl)
 
     console.log(req.body)
-    return res.end("<html>Sucessfully Logged in</html>")
+    return res.sendFile(__dirname + "/pages/success.html")
 })
 
 app.listen(port , ()=>{

@@ -1,5 +1,6 @@
 ROASTING_ML_MODELS = {
-    "user-agents":"EnsembleClassifier"
+    "user-agents":"EnsembleClassifier",
+    "payloads":"EnsembleClassifier"
 }
 
 BACKENDSERVER = [ 

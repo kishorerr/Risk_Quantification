@@ -17,12 +17,14 @@ def get_handler(url : str) -> Response:
 def post_handler(url : str) -> Response:
 
     try:
-        response = requests.post(url , json=request.get_json() , cookies=request.cookies)
+        print(request.content_type)
+        response = requests.post(url , cookies=request.cookies)
         headers = exclude_headers(response)
 
         f_response = Response(response.content , response.status_code , headers)
         return f_response
-    except: 
+    except Exception as e: 
+        print(e)
         return Response("Internal Server Error" , 500)
         
 def put_handler(url : str) -> Response:
