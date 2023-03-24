@@ -1,6 +1,7 @@
 from flask import Blueprint ,request , Response , make_response , render_template
 from WAF.WAF_Layers.bad_useragents import block_baduseragents
 from WAF.WAF_Layers.malicious_payloads import block_malicious_payloads
+from WAF.Request_Handlers.utils import get_payload
 import csv
 from datetime import date,datetime
 from env.http_config import HTTP_CONFIG
@@ -24,7 +25,7 @@ def request_handler(path : str ="") -> Response:
             data = [request.headers['User-Agent'], real_url , x , y.strftime("%H:%M:%S") ]
 
 
-            with open('WAF_Output/waf_user_agents.csv', 'a', encoding='UTF8', newline='') as f:
+            with open('Logged_Output/waf_user_agents.csv', 'a', encoding='UTF8', newline='') as f:
                 writer = csv.writer(f)
                 writer.writerow(data)
             return make_response(render_template("blocked.html")
@@ -37,6 +38,14 @@ def request_handler(path : str ="") -> Response:
         if is_malicious_req:
             
             print(f"\nMalicious Payload!!! |URL : {real_url} |  |METHOD : {request.method} |Ip : {request.remote_addr} ")
+            x = date.today()
+            y = datetime.now()
+            data = [get_payload(request), real_url , x , y.strftime("%H:%M:%S") ]
+
+
+            with open('Logged_Output/waf_payloads.csv', 'a', encoding='UTF8', newline='') as f:
+                writer = csv.writer(f)
+                writer.writerow(data)
             
             return make_response(render_template("blocked.html")
                                     ,HTTP_CONFIG["blocked_status_code"]

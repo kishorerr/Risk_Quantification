@@ -1,11 +1,13 @@
 from flask import Request
 import joblib
+from skfuzzy import control as ctrl
 from env.ml_config import PAYLOAD_FILE_PATH, PAYLOAD_ML_MODELS
 from env.proxy_config import ROASTING_ML_MODELS 
 from WAF_Model_Trainer.utils import extract_feature
 
 file_path = PAYLOAD_FILE_PATH + "/" + PAYLOAD_ML_MODELS[ROASTING_ML_MODELS["payloads"]]
 print(file_path)
+
 
 
 def block_malicious_payloads(request : Request):
@@ -32,7 +34,9 @@ def block_malicious_payloads(request : Request):
 
         if not args_str:
             return 0
-
+        
+        args_str.rsplit(' ',1)[0]
+        print("\n\nPayload Data --> " + args_str )
         d = extract_feature(args_str)
         result = model.predict(d.drop(["payloads"],axis=1).values)
         return result[0]

@@ -17,7 +17,6 @@ def get_handler(url : str) -> Response:
 def post_handler(url : str) -> Response:
 
     try:
-        print(request.content_type)
         response = requests.post(url , cookies=request.cookies)
         headers = exclude_headers(response)
 
