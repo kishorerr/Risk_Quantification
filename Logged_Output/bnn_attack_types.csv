@@ -1,0 +1,4 @@
+Payload,Attack Type
+<script>alert(1)</script> dfd login ,CROSS-SITE SCRIPTING (XSS)
+"&& perl -e 'print """"X""""x4096'  login ",COMMAND INJECTION
+"admin' and substring(password/text(),1,1)='7  login ",SQL INJECTION
